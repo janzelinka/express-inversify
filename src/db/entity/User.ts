@@ -28,6 +28,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  salt: string;
+
   @OneToOne(() => Customer)
   @JoinColumn()
   customer: Customer;

@@ -8,8 +8,17 @@ dotenv.config();
 
 export type JWTUserInfo = Exclude<User, "password">;
 
-export function generateAccessToken(username: JWTUserInfo) {
-  return jwt.sign({ username }, process.env.TOKEN_SECRET, {
+export function generateAccessToken(userInfo: User) {
+  const _userInfo = createJWTUserInfo(userInfo);
+  return jwt.sign({ userInfo: _userInfo }, process.env.TOKEN_SECRET, {
     expiresIn: "1800s",
   });
 }
+
+export const createJWTUserInfo = (user: User) => {
+  const jwtUserInfo: JWTUserInfo = {
+    ...user,
+  };
+  delete jwtUserInfo["password"];
+  return jwtUserInfo;
+};
