@@ -2,7 +2,10 @@ import { inject, injectable } from "inversify";
 import { User } from "../db/entity/User";
 import { generateAccessToken, JWTUserInfo } from "../jwt";
 import { DatabaseService } from "./DatabaseService";
-import crypto from "crypto";
+
+import { UserNotCreated } from "../errors/UserNotCreated";
+import { UserNotSaved } from "../errors/UserNotSaved";
+import { HashService } from "./HashService";
 interface ILogin {
   userName: string;
   password: string;
@@ -16,7 +19,8 @@ export interface IAuthService {
 @injectable()
 export class AuthService implements IAuthService {
   constructor(
-    @inject(DatabaseService) private readonly databaseService: DatabaseService
+    @inject(DatabaseService) private readonly databaseService: DatabaseService,
+    @inject(HashService) private readonly hashService: HashService
   ) {}
 
   login = async ({
@@ -31,14 +35,9 @@ export class AuthService implements IAuthService {
       where: { userName },
     });
 
-    const hash = crypto
-      .pbkdf2Sync(password, user.salt, 1000, 64, `sha512`)
-      .toString(`hex`);
-
-    console.log(user, hash);
+    const hash = this.hashService.createHash(password, user.salt);
 
     if (user && hash === user.password) {
-      console.log("logged in");
       return generateAccessToken(user);
     }
     return null;
@@ -46,14 +45,25 @@ export class AuthService implements IAuthService {
 
   register = async (user: User): Promise<User> => {
     const userRepository = await this.databaseService.getRepository(User);
-    const salt = crypto.randomBytes(16).toString("hex");
-    const hash = crypto
-      .pbkdf2Sync(user.password, salt, 1000, 64, `sha512`)
-      .toString(`hex`);
-
-    console.log(`salt and hash`, salt, hash);
-    return userRepository.save(
-      userRepository.create({ ...user, password: hash, salt })
+    const { hash, salt } = this.hashService.generateHashAndSaltFromPassword(
+      user.password
     );
+
+    let userCreated;
+    try {
+      userCreated = await userRepository.save(
+        userRepository.create({ ...user, password: hash, salt })
+      );
+    } catch (error) {
+      throw new UserNotCreated(error.message);
+    }
+
+    // try {
+    //   userCreated = await userRepository.save(userCreated);
+    // } catch (error) {
+    //   throw new UserNotSaved(error.message);
+    // }
+
+    return userCreated;
   };
 }

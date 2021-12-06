@@ -9,6 +9,7 @@ import { InversifyExpressServer } from "inversify-express-utils";
 import { DatabaseService } from "./services/DatabaseService";
 import { Connection, createConnection } from "typeorm";
 import { AuthService } from "./services/AuthService";
+import { HashService } from "./services/HashService";
 
 let container = new Container();
 
@@ -20,6 +21,7 @@ let container = new Container();
   });
   container.bind<DatabaseService>(DatabaseService).to(DatabaseService);
   container.bind<AuthService>(AuthService).to(AuthService);
+  container.bind<HashService>(HashService).to(HashService);
 
   let server = new InversifyExpressServer(container);
 

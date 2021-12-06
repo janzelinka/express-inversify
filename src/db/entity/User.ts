@@ -4,6 +4,8 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  BeforeInsert,
+  InsertEvent,
 } from "typeorm";
 import { Customer } from "./Customer";
 import { Role } from "./Role";
@@ -13,16 +15,16 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  userName: string;
+  @Column({ type: "varchar", unique: true, length: 50 })
+  userName!: string;
 
-  @Column()
+  @Column({ nullable: true })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName: string;
 
-  @Column()
+  @Column({ nullable: true })
   age: number;
 
   @Column()
@@ -38,4 +40,9 @@ export class User {
   @OneToOne(() => Role)
   @JoinColumn()
   role: Role;
+
+  @BeforeInsert()
+  beforeUserNameInsert = () => {
+    this.userName = this.userName === "" ? null : this.userName;
+  };
 }

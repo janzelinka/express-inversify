@@ -15,6 +15,7 @@ import { injectable, inject } from "inversify";
 import { DatabaseService } from "../services/DatabaseService";
 import { User } from "../db/entity/User";
 import { AuthService } from "../services/AuthService";
+import { UserNotCreated } from "../errors/UserNotCreated";
 
 @controller("/login")
 export class LoginController implements interfaces.Controller {
@@ -44,8 +45,12 @@ export class LoginController implements interfaces.Controller {
     @request() req: express.Request,
     @response() res: express.Response
   ) {
-    const user = await this.authService.register(req.body);
-    res.sendStatus(200);
-    res.send("hello");
+    try {
+      const user = await this.authService.register(req.body);
+      res.json(user);
+    } catch (error) {
+      res.statusCode = 403;
+      res.send(error);
+    }
   }
 }
