@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { User } from "./User";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Role {
@@ -14,8 +7,4 @@ export class Role {
 
   @Column()
   roleName: string;
-
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
 }

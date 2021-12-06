@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import "./controllers/ExampleController";
 import "./controllers/LoginController";
+import "./controllers/UsersController";
 import * as bodyParser from "body-parser";
 import cors from "cors";
 import { Container } from "inversify";
