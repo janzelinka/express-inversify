@@ -17,7 +17,7 @@ export class UsersController implements interfaces.Controller {
     @inject(DatabaseService) private databaseService: DatabaseService
   ) {}
 
-  @httpPost("/", AUTHORIZED_MIDDLEWARE)
+  @httpPost("/", AUTHORIZED_MIDDLEWARE(() => true))
   private async index(
     @request() req: express.Request,
     @response() res: express.Response
