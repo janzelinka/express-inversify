@@ -36,10 +36,12 @@ export class AuthService implements IAuthService {
       relations: ["role"],
     });
 
-    const hash = this.hashService.createHash(password, user.salt);
+    if (user) {
+      const hash = this.hashService.createHash(password, user.salt);
 
-    if (user && hash === user.password) {
-      return generateAccessToken(user);
+      if (hash === user.password) {
+        return generateAccessToken(user);
+      }
     }
     return null;
   };

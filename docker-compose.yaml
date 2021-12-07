@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  ts-node-docker2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    container_name: ts-node-docker2
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    command: yarn docker-start
