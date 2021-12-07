@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 // get config vars
 dotenv.config();
 
-export type JWTUserInfo = Exclude<User, "password">;
+export type JWTUserInfo = { userInfo: Exclude<User, "password"> };
 
 export function generateAccessToken(userInfo: User) {
   const _userInfo = createJWTUserInfo(userInfo);
@@ -28,7 +28,7 @@ export function parseAccessToken(token: string): Promise<JWTUserInfo | null> {
 }
 
 export const createJWTUserInfo = (user: User) => {
-  const jwtUserInfo: JWTUserInfo = {
+  const jwtUserInfo: User = {
     ...user,
   };
   delete jwtUserInfo["password"];

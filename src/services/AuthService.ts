@@ -33,6 +33,7 @@ export class AuthService implements IAuthService {
     const userRepository = await this.databaseService.getRepository(User);
     const user = await userRepository.findOne({
       where: { userName },
+      relations: ["role"],
     });
 
     const hash = this.hashService.createHash(password, user.salt);
