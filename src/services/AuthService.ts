@@ -6,6 +6,7 @@ import { DatabaseService } from "./DatabaseService";
 import { UserNotCreated } from "../errors/UserNotCreated";
 import { UserNotSaved } from "../errors/UserNotSaved";
 import { HashService } from "./HashService";
+import { ERoles } from "../enums/Roles";
 interface ILogin {
   userName: string;
   password: string;
@@ -55,17 +56,17 @@ export class AuthService implements IAuthService {
     let userCreated;
     try {
       userCreated = await userRepository.save(
-        userRepository.create({ ...user, password: hash, salt })
+        userRepository.create({
+          ...user,
+          role: { id: ERoles.USER },
+          password: hash,
+          salt,
+        })
       );
     } catch (error) {
+      console.log(error);
       throw new UserNotCreated(error.message);
     }
-
-    // try {
-    //   userCreated = await userRepository.save(userCreated);
-    // } catch (error) {
-    //   throw new UserNotSaved(error.message);
-    // }
 
     return userCreated;
   };

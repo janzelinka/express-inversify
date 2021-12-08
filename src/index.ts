@@ -10,15 +10,16 @@ import { DatabaseService } from "./services/DatabaseService";
 import { Connection, createConnection } from "typeorm";
 import { AuthService } from "./services/AuthService";
 import { HashService } from "./services/HashService";
+import { Role } from "./db/entity/Role";
 
 let container = new Container();
 
 (async function (container: Container) {
   const connection = await createConnection();
 
-  container
-    .bind<Connection>(Connection)
-    .toDynamicValue((context) => connection);
+  container.bind<Connection>(Connection).toDynamicValue((context) => {
+    return connection;
+  });
   container.bind<DatabaseService>(DatabaseService).to(DatabaseService);
   container.bind<AuthService>(AuthService).to(AuthService);
   container.bind<HashService>(HashService).to(HashService);

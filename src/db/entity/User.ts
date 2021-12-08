@@ -6,6 +6,7 @@ import {
   JoinColumn,
   BeforeInsert,
   InsertEvent,
+  ManyToOne,
 } from "typeorm";
 import { Customer } from "./Customer";
 import { Role } from "./Role";
@@ -18,13 +19,13 @@ export class User {
   @Column({ type: "varchar", unique: true, length: 50 })
   userName!: string;
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   firstName: string;
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   lastName: string;
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   age: number;
 
   @Column()
@@ -37,8 +38,7 @@ export class User {
   @JoinColumn()
   customer: Customer;
 
-  @OneToOne(() => Role)
-  @JoinColumn()
+  @ManyToOne(() => Role, (role) => role.users)
   role: Role;
 
   @BeforeInsert()

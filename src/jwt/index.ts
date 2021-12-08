@@ -32,5 +32,6 @@ export const createJWTUserInfo = (user: User) => {
     ...user,
   };
   delete jwtUserInfo["password"];
+  delete jwtUserInfo["salt"];
   return jwtUserInfo;
 };
