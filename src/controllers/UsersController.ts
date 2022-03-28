@@ -96,7 +96,7 @@ export class UsersController extends AbstractRepository<User> implements interfa
     @request() req: express.Request,
     @response() res: express.Response
   ) {
-    const result = await this.delete(User, { id: req.body.id })
+    const result = await this.delete({ id: req.body.id })
     if (result.affected == 1) {
       res.statusCode = 200
       res.statusMessage = "Succesfully deleted"

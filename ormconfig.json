@@ -3,9 +3,21 @@
   "database": "database.sqlite",
   "logging": false,
   "migrationsRun": true,
-  "entities": ["src/db/entity/**/*.ts"],
-  "migrations": ["src/db/migration/**/*.ts"],
-  "subscribers": ["src/db/subscriber/**/*.ts"],
+  "entities": [
+    "src/db/entity/**/*.ts"
+  ],
+  "migrations": [
+    "src/db/migration/**/*.ts"
+  ],
+  "subscribers": [
+    "src/db/subscriber/**/*.ts"
+  ],
+  "seeds": [
+    "src/db/seeds/**/*.ts"
+  ],
+  "factories": [
+    "src/db/factories/**/*.ts"
+  ],
   "cli": {
     "entitiesDir": "src/db/entity",
     "migrationsDir": "src/db/migration",

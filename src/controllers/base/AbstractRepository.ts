@@ -1,13 +1,15 @@
 import { injectable } from "inversify";
-import { FindManyOptions, FindConditions, DeleteResult } from "typeorm";
+import { FindManyOptions, FindConditions, DeleteResult, Repository } from "typeorm";
 import { DatabaseService } from "../../services/DatabaseService";
+
+
 
 @injectable()
 export abstract class AbstractRepository<T> {
 
     constructor(protected readonly databaseService: DatabaseService, private readonly repositoryEntity: new () => T) { }
 
-    private getRepository() {
+    protected getRepository() {
         return this.databaseService.getRepository(this.repositoryEntity)
     }
 
@@ -29,7 +31,7 @@ export abstract class AbstractRepository<T> {
         return await this.create(data)
     }
 
-    protected delete = async (a: new () => T, whereCondition: FindConditions<T>): Promise<DeleteResult> => {
+    protected delete = async (whereCondition: FindConditions<T>): Promise<DeleteResult> => {
         const repository = await this.getRepository()
         return await repository.delete(whereCondition)
     }
