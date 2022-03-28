@@ -1,15 +1,26 @@
-# 🚀 Welcome to your new awesome project!
+# 🚀 README JUST FOR DEV PURPOSES
 
-This project has been created using **webpack-cli**, you can now run
-
-```
-npm run build
-```
-
-or
+To install
 
 ```
-yarn build
+npm run install / yarn
 ```
 
-to bundle your application
+For dev purposes
+
+```
+yarn dev / npm run dev
+```
+
+Seeding some more data
+
+```
+yarn db:seed / npm run db:seed
+```
+
+Generating new migration (name of migration should be changed in package.json
+```
+yarn generate-migration / npm run generate-migration
+```
+
+# 🚀 BUILD
