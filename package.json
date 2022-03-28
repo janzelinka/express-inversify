@@ -2,7 +2,9 @@
   "name": "my-webpack-project",
   "version": "1.0.0",
   "description": "My webpack project",
+  "main": "src/index.ts",
   "scripts": {
+    "start": "nodemon",
     "dev": "nodemon --watch src/**/* --ext ts,json --ignore src/**/*.spec.ts --exec ts-node src/index.ts",
     "db:seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
     "docker-start": "ts-node src/index.ts",
