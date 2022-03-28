@@ -7,6 +7,7 @@ import { UserNotCreated } from "../errors/UserNotCreated";
 import { UserNotSaved } from "../errors/UserNotSaved";
 import { HashService } from "./HashService";
 import { ERoles } from "../enums/Roles";
+import { AbstractRepository } from "typeorm/repository/AbstractRepository";
 interface ILogin {
   userName: string;
   password: string;
@@ -22,7 +23,7 @@ export class AuthService implements IAuthService {
   constructor(
     @inject(DatabaseService) private readonly databaseService: DatabaseService,
     @inject(HashService) private readonly hashService: HashService
-  ) {}
+  ) { }
 
   login = async ({
     userName,
@@ -31,7 +32,8 @@ export class AuthService implements IAuthService {
     userName: string;
     password: string;
   }): Promise<string | null> => {
-    const userRepository = await this.databaseService.getRepository(User);
+
+    const userRepository = await this.databaseService.getRepository<User>(User);
     const user = await userRepository.findOne({
       where: { userName },
       relations: ["role"],

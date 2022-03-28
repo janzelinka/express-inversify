@@ -11,6 +11,11 @@ export const AUTHORIZED_MIDDLEWARE =
     next: express.NextFunction
   ) => {
     const token = req.headers["authorization"];
+    if (!!!token) {
+      res.statusCode = 401;
+      res.send("Unauthorized - No token provided");
+      return
+    }
     const { userInfo } = await parseAccessToken(token);
     if (userInfo && fullfillmentFn(userInfo)) {
       next();

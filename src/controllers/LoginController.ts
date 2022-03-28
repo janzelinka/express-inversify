@@ -16,10 +16,13 @@ import { DatabaseService } from "../services/DatabaseService";
 import { User } from "../db/entity/User";
 import { AuthService } from "../services/AuthService";
 import { UserNotCreated } from "../errors/UserNotCreated";
+import { DeleteResult, FindConditions, FindManyOptions, Repository } from "typeorm";
+
 
 @controller("/login")
 export class LoginController implements interfaces.Controller {
-  constructor(@inject(AuthService) private authService: AuthService) {}
+  constructor(@inject(AuthService) private authService: AuthService) {
+  }
 
   @httpPost("/")
   private async index(
@@ -53,4 +56,6 @@ export class LoginController implements interfaces.Controller {
       res.send(error);
     }
   }
+
+
 }

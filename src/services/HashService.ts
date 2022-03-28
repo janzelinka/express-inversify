@@ -20,6 +20,9 @@ export class HashService implements IHashService {
   };
 
   generateHashAndSaltFromPassword = (password: string) => {
+    if (!password) {
+      return { hash: '', salt: '' }
+    }
     const salt = crypto.randomBytes(16).toString("hex");
     const hash = crypto
       .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
