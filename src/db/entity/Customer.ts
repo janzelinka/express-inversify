@@ -21,7 +21,4 @@ export class Customer {
   @Column()
   vatID: string;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
 }

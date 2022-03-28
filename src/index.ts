@@ -2,6 +2,7 @@ import "reflect-metadata";
 import "./controllers/ExampleController";
 import "./controllers/LoginController";
 import "./controllers/UsersController";
+import "./controllers/CustomersController";
 import * as bodyParser from "body-parser";
 import cors from "cors";
 import { Container } from "inversify";
@@ -10,7 +11,6 @@ import { DatabaseService } from "./services/DatabaseService";
 import { Connection, createConnection } from "typeorm";
 import { AuthService } from "./services/AuthService";
 import { HashService } from "./services/HashService";
-import { Role } from "./db/entity/Role";
 
 let container = new Container();
 
