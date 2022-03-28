@@ -11,6 +11,7 @@ import { DatabaseService } from "./services/DatabaseService";
 import { Connection, createConnection } from "typeorm";
 import { AuthService } from "./services/AuthService";
 import { HashService } from "./services/HashService";
+import { JWTService } from "./services/JWTService";
 
 let container = new Container();
 
@@ -23,6 +24,7 @@ let container = new Container();
   container.bind<DatabaseService>(DatabaseService).to(DatabaseService);
   container.bind<AuthService>(AuthService).to(AuthService);
   container.bind<HashService>(HashService).to(HashService);
+  container.bind<JWTService>(JWTService).to(JWTService)
 
   let server = new InversifyExpressServer(container);
 

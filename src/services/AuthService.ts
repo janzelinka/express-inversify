@@ -1,6 +1,5 @@
 import { inject, injectable } from "inversify";
 import { User } from "../db/entity/User";
-import { generateAccessToken, JWTUserInfo } from "../jwt";
 import { DatabaseService } from "./DatabaseService";
 
 import { UserNotCreated } from "../errors/UserNotCreated";
@@ -8,6 +7,7 @@ import { UserNotSaved } from "../errors/UserNotSaved";
 import { HashService } from "./HashService";
 import { ERoles } from "../enums/Roles";
 import { AbstractRepository } from "typeorm/repository/AbstractRepository";
+import { JWTService } from "./JWTService";
 interface ILogin {
   userName: string;
   password: string;
@@ -22,7 +22,8 @@ export interface IAuthService {
 export class AuthService implements IAuthService {
   constructor(
     @inject(DatabaseService) private readonly databaseService: DatabaseService,
-    @inject(HashService) private readonly hashService: HashService
+    @inject(HashService) private readonly hashService: HashService,
+    @inject(JWTService) private readonly jwtService: JWTService
   ) { }
 
   login = async ({
@@ -43,7 +44,7 @@ export class AuthService implements IAuthService {
       const hash = this.hashService.createHash(password, user.salt);
 
       if (hash === user.password) {
-        return generateAccessToken(user);
+        return this.jwtService.generateAccessToken(user);
       }
     }
     return null;

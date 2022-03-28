@@ -15,19 +15,5 @@ export default class CreateUsers implements Seeder {
             return user
         }).createMany(15)
 
-        // const salt = crypto.randomBytes(16).toString("hex");
-        // const hash = crypto
-        //     .pbkdf2Sync("testpassword", salt, 1000, 64, `sha512`)
-        //     .toString(`hex`);
-
-        // await connection
-        //     .createQueryBuilder()
-        //     .insert()
-        //     .into(User)
-        //     .values([
-        //         { firstName: 'Timber', lastName: 'Saw', userName: 'abc', age: 2, password: hash, salt: salt },
-        //         { firstName: 'Phantom', lastName: 'Lancer', userName: 'def', age: 1, password: hash, salt: salt },
-        //     ])
-        //     .execute()
     }
 }

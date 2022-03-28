@@ -28,11 +28,12 @@ export class CustomersController extends AbstractRepository<Customer> implements
         super(databaseService, Customer)
     }
 
-    @httpPost("/", AUTHORIZED_MIDDLEWARE(PUBLIC))
+    @httpGet("/", AUTHORIZED_MIDDLEWARE(PUBLIC))
     private async index(
         @request() req: express.Request,
         @response() res: express.Response
     ) {
+        //DEFAULT GET ALL
         const customers: Customer[] = await (await this.getRepository()).find();
         res.json(customers);
     }
@@ -43,8 +44,7 @@ export class CustomersController extends AbstractRepository<Customer> implements
         @request() req: express.Request,
         @response() res: express.Response
     ) {
-        // const result = await this.authService.register(req.body)
-        // console.log(result)
+        // CREATE LOGIC
     }
 
     @httpGet("/list")
@@ -52,8 +52,8 @@ export class CustomersController extends AbstractRepository<Customer> implements
         @request() req: express.Request,
         @response() res: express.Response
     ) {
+        //GET BY ATTRIBUTES
         const customers = await this.get()
-        console.log(customers)
         return customers
     }
 
@@ -62,24 +62,7 @@ export class CustomersController extends AbstractRepository<Customer> implements
         @request() req: express.Request,
         @response() res: express.Response
     ) {
-        // console.log(`params`, req.body, req.body.id)
-        // const users = await this.get({ where: { id: req.body.id } })
-        // const updatedUser: User = {
-        //     ...users[0],
-        //     age: req.body.age,
-        //     firstName: req.body.firstName,
-        //     lastName: req.body.lastName,
-        //     userName: req.body.userName
-        // }
-
-        // const result = await this.update(updatedUser)
-
-        // if (result) {
-        //     res.json(updatedUser)
-        // } else {
-        //     res.statusCode = 501
-        //     res.statusMessage = 'Something bad happened during update'
-        // }
+        // UPDATE LOGIC
     }
 
     @httpDelete("/delete")
@@ -87,6 +70,7 @@ export class CustomersController extends AbstractRepository<Customer> implements
         @request() req: express.Request,
         @response() res: express.Response
     ) {
+        //DELETE LOGIC
         const result = await this.delete({ id: req.body.id })
         if (result.affected == 1) {
             res.statusCode = 200
