@@ -1,21 +1,29 @@
-import { JWTUserInfo, parseAccessToken } from "../jwt";
-import * as express from "express";
-import { Role } from "../db/entity/Role";
-import { User } from "../db/entity/User";
+import { parseAccessToken } from '../jwt'
+import * as express from 'express'
+import { User } from '../db/entity/User'
+
+type TFullfilmentFn = (decoded: User) => boolean
 
 export const AUTHORIZED_MIDDLEWARE =
-  (fullfillmentFn: (decoded: User) => boolean) =>
+  (fullfillmentFn: TFullfilmentFn) =>
   async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) => {
-    const token = req.headers["authorization"];
-    const { userInfo } = await parseAccessToken(token);
-    if (userInfo && fullfillmentFn(userInfo)) {
-      next();
+    const token = req.cookies.token
+
+    if (!token) {
+      res.statusCode = 401
+      res.send('Unauthorized')
     } else {
-      res.statusCode = 401;
-      res.send("Unauthorized");
+      const { userInfo } = await parseAccessToken(token)
+
+      if (userInfo && fullfillmentFn(userInfo)) {
+        next()
+      } else {
+        res.statusCode = 401
+        res.send('Unauthorized')
+      }
     }
-  };
+  }

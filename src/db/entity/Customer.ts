@@ -4,24 +4,24 @@ import {
   Column,
   JoinColumn,
   OneToOne,
-} from "typeorm";
-import { User } from "./User";
+} from 'typeorm'
+import { User } from './User'
 
 @Entity()
 export class Customer {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  customerName: string;
+  customerName: string
 
   @Column()
-  customerCountry: string;
+  customerCountry: string
 
   @Column()
-  vatID: string;
+  vatID: string
 
   @OneToOne(() => User)
   @JoinColumn()
-  user: User;
+  user?: User
 }

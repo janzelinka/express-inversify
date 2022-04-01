@@ -1,4 +1,4 @@
-import * as express from "express";
+import * as express from 'express'
 import {
   interfaces,
   controller,
@@ -10,40 +10,39 @@ import {
   response,
   requestParam,
   next,
-} from "inversify-express-utils";
-import { injectable, inject } from "inversify";
-import { DatabaseService } from "../services/DatabaseService";
+} from 'inversify-express-utils'
+import { injectable, inject } from 'inversify'
+import { DatabaseService } from '../services/DatabaseService'
 
-@controller("/foo")
+@controller('/foo')
 export class FooController implements interfaces.Controller {
   constructor(
     @inject(DatabaseService) private databaseService: DatabaseService
   ) {}
 
-  @httpGet("/")
+  @httpGet('/')
   private index(
     @request() req: express.Request,
-    @response() res: express.Response,
-    @next() next: express.NextFunction
+    @response() res: express.Response
   ): any {
     // this.databaseService.getProducts();
   }
 
-  @httpGet("/")
+  @httpGet('/')
   private list(
-    @queryParam("start") start: number,
-    @queryParam("count") count: number
+    @queryParam('start') start: number,
+    @queryParam('count') count: number
   ): any {}
 
-  @httpPost("/")
+  @httpPost('/')
   private async create(
     @request() req: express.Request,
     @response() res: express.Response
   ) {}
 
-  @httpDelete("/:id")
+  @httpDelete('/:id')
   private delete(
-    @requestParam("id") id: string,
+    @requestParam('id') id: string,
     @response() res: express.Response
   ) {}
 }

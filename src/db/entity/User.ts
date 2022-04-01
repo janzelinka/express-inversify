@@ -16,16 +16,16 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "varchar", unique: true, length: 50 })
+  @Column( { type: "varchar", unique: true, length: 50 } )
   userName!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column( { type: "varchar", nullable: true } )
   firstName: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column( { type: "varchar", nullable: true } )
   lastName: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column( { type: "varchar", nullable: true } )
   age: number;
 
   @Column()
@@ -34,11 +34,11 @@ export class User {
   @Column()
   salt: string;
 
-  @OneToOne(() => Customer)
+  @OneToOne( () => Customer )
   @JoinColumn()
   customer: Customer;
 
-  @ManyToOne(() => Role, (role) => role.users)
+  @ManyToOne( () => Role, ( role ) => role.users )
   role: Role;
 
   @BeforeInsert()

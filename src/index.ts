@@ -1,30 +1,31 @@
-import "reflect-metadata";
-import "./controllers/ExampleController";
-import "./controllers/LoginController";
-import "./controllers/UsersController";
-import * as bodyParser from "body-parser";
-import cors from "cors";
-import { Container } from "inversify";
-import { InversifyExpressServer } from "inversify-express-utils";
-import { DatabaseService } from "./services/DatabaseService";
-import { Connection, createConnection } from "typeorm";
-import { AuthService } from "./services/AuthService";
-import { HashService } from "./services/HashService";
-import { Role } from "./db/entity/Role";
+import 'reflect-metadata'
+import * as bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import { Container } from 'inversify'
+import { InversifyExpressServer } from 'inversify-express-utils'
+import { Connection, createConnection } from 'typeorm'
+import './controllers/ExampleController'
+import './controllers/LoginController'
+import './controllers/UsersController'
+import './controllers/CustomersController'
+import { AuthService } from './services/AuthService'
+import { DatabaseService } from './services/DatabaseService'
+import { HashService } from './services/HashService'
 
-let container = new Container();
+const container = new Container()
 
-(async function (container: Container) {
-  const connection = await createConnection();
+;(async function () {
+  const connection = await createConnection()
 
   container.bind<Connection>(Connection).toDynamicValue((context) => {
-    return connection;
-  });
-  container.bind<DatabaseService>(DatabaseService).to(DatabaseService);
-  container.bind<AuthService>(AuthService).to(AuthService);
-  container.bind<HashService>(HashService).to(HashService);
+    return connection
+  })
+  container.bind<DatabaseService>(DatabaseService).to(DatabaseService)
+  container.bind<AuthService>(AuthService).to(AuthService)
+  container.bind<HashService>(HashService).to(HashService)
 
-  let server = new InversifyExpressServer(container);
+  const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
     app
@@ -34,10 +35,11 @@ let container = new Container();
         })
       )
       .use(bodyParser.json())
-      .use(cors());
-  });
+      .use(cookieParser())
+      .use(cors({ origin: ['http://localhost:4200'], credentials: true }))
+  })
 
   server.build().listen(3000, () => {
-    console.log("running");
-  });
-})(container);
+    console.log('running')
+  })
+})()

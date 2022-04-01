@@ -1,73 +1,76 @@
-import { inject, injectable } from "inversify";
-import { User } from "../db/entity/User";
-import { generateAccessToken, JWTUserInfo } from "../jwt";
-import { DatabaseService } from "./DatabaseService";
+import { inject, injectable } from 'inversify'
+import { User } from '../db/entity/User'
+import { ERoles } from '../enums/Roles'
+import { UserNotCreated } from '../errors/UserNotCreated'
+import { generateAccessToken } from '../jwt'
+import { AbstractRepository } from '../repository/Repository'
+import { DatabaseService } from './DatabaseService'
+import { HashService } from './HashService'
 
-import { UserNotCreated } from "../errors/UserNotCreated";
-import { UserNotSaved } from "../errors/UserNotSaved";
-import { HashService } from "./HashService";
-import { ERoles } from "../enums/Roles";
 interface ILogin {
-  userName: string;
-  password: string;
+  userName: string
+  password: string
 }
 
 export interface IAuthService {
-  login: ({ userName, password }: ILogin) => Promise<string>;
-  register: (user: User) => Promise<User>;
+  login: ({ userName, password }: ILogin) => Promise<string>
+  register: (user: User) => Promise<User>
 }
 
 @injectable()
-export class AuthService implements IAuthService {
+export class AuthService
+  extends AbstractRepository<User>
+  implements IAuthService
+{
   constructor(
-    @inject(DatabaseService) private readonly databaseService: DatabaseService,
+    @inject(DatabaseService) databaseService: DatabaseService,
     @inject(HashService) private readonly hashService: HashService
-  ) {}
+  ) {
+    super(databaseService.getRepository(User))
+    console.log('running constructor')
+  }
 
   login = async ({
     userName,
     password,
   }: {
-    userName: string;
-    password: string;
+    userName: string
+    password: string
   }): Promise<string | null> => {
-    const userRepository = await this.databaseService.getRepository(User);
-    const user = await userRepository.findOne({
+    const [user] = await this.get({
       where: { userName },
-      relations: ["role"],
-    });
+      relations: ['role'],
+    })
+
+    console.log(user)
 
     if (user) {
-      const hash = this.hashService.createHash(password, user.salt);
+      const hash = this.hashService.createHash(password, user.salt)
 
       if (hash === user.password) {
-        return generateAccessToken(user);
+        return generateAccessToken(user)
       }
     }
-    return null;
-  };
+    return null
+  }
 
   register = async (user: User): Promise<User> => {
-    const userRepository = await this.databaseService.getRepository(User);
     const { hash, salt } = this.hashService.generateHashAndSaltFromPassword(
       user.password
-    );
+    )
 
-    let userCreated;
+    let userCreated
     try {
-      userCreated = await userRepository.save(
-        userRepository.create({
-          ...user,
-          role: { id: ERoles.USER },
-          password: hash,
-          salt,
-        })
-      );
+      userCreated = await this.create({
+        ...user,
+        role: { id: ERoles.USER },
+        password: hash,
+        salt,
+      })
     } catch (error) {
-      console.log(error);
-      throw new UserNotCreated(error.message);
+      throw new UserNotCreated(error.message)
     }
 
-    return userCreated;
-  };
+    return userCreated
+  }
 }

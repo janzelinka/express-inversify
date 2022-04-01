@@ -1,15 +1,28 @@
-# 🚀 Welcome to your new awesome project!
+# 🚀 express-inversify-jwt
+- Just an example of implementing http server in NodeJS running on express, using InversifyJS for DI Container and TypeORM for ORM (thanks CJay).
+- Implemented JWT for Authentication (still in development phase).
+- Used SQLite as database.
+## Installation
+- `npm install` 
+or 
+- `yarn install`
 
-This project has been created using **webpack-cli**, you can now run
+## Development
+- `npm run dev` 
+- or 
+- `yarn dev`
 
-```
-npm run build
-```
+## Build
+- `tsc . -p`
 
-or
+## Tests
+- ToDo
+## Creating migration
+- you should modify your model, as you want, e.g. add column
+- see command generate-migration in package.json - you should modify the migration name as you want (Last string user)
+- after that run npm run generate-migration or yarn generate-migration
 
-```
-yarn build
-```
-
-to bundle your application
+## Running on Docker
+- ToDo
+## Tip
+- when using VSCode, install TSLint
