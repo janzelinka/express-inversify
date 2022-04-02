@@ -5,64 +5,50 @@ import cors from 'cors'
 import { Container } from 'inversify'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { Connection, createConnection } from 'typeorm'
-import './controllers/ExampleController'
 import './controllers/LoginController'
 import './controllers/UsersController'
 import './controllers/CustomersController'
 import { AuthService } from './services/AuthService'
 import { DatabaseService } from './services/DatabaseService'
 import { HashService } from './services/HashService'
-import * as path from 'path'
+import { getTypeORMConfig } from './config'
 
-const container = new Container()
+let container = new Container()
+const port = process.env.PORT || 3000
 
 ;(async function () {
-  const connection = await createConnection({
-    type: 'sqlite',
-    database: path.resolve(__dirname, 'database.sqlite'),
-    logging: false,
-    migrationsRun: true,
-    entities: [
-      path.resolve(__dirname, 'database/entity/**/*.ts'),
-      path.resolve(__dirname, 'database/entity/**/*.js'),
-    ],
-    migrations: [
-      path.resolve(__dirname, 'database/migration/**/*.ts'),
-      path.resolve(__dirname, 'database/migration/**/*.js'),
-    ],
-    subscribers: [
-      path.resolve(__dirname, 'database/subscriber/**/*.ts'),
-      path.resolve(__dirname, 'database/subscriber/**/*.js'),
-    ],
-    cli: {
-      entitiesDir: path.resolve(__dirname, 'database/entity'),
-      migrationsDir: path.resolve(__dirname, 'database/migration'),
-      subscribersDir: path.resolve(__dirname, 'database/subscriber'),
-    },
-  })
+  const withConfig = getTypeORMConfig()
+  const connection = await createConnection(withConfig)
+  container = bindContainerWith(container, connection)
 
+  const server = new InversifyExpressServer(container)
+    .setConfig((app) => {
+      app
+        .use(
+          bodyParser.urlencoded({
+            extended: true,
+          })
+        )
+        .use(bodyParser.json())
+        .use(cookieParser())
+        .use(cors({ origin: ['http://localhost:4200'], credentials: true }))
+    })
+    .build()
+    .listen(port, () => {
+      console.log('running on port no: ' + port)
+    })
+})()
+
+const bindContainerWith = (
+  container: Container,
+  databaseConnection: Connection
+): Container => {
   container.bind<Connection>(Connection).toDynamicValue(() => {
-    return connection
+    return databaseConnection
   })
   container.bind<DatabaseService>(DatabaseService).to(DatabaseService)
   container.bind<AuthService>(AuthService).to(AuthService)
   container.bind<HashService>(HashService).to(HashService)
 
-  const server = new InversifyExpressServer(container)
-
-  server.setConfig((app) => {
-    app
-      .use(
-        bodyParser.urlencoded({
-          extended: true,
-        })
-      )
-      .use(bodyParser.json())
-      .use(cookieParser())
-      .use(cors({ origin: ['http://localhost:4200'], credentials: true }))
-  })
-
-  server.build().listen(3000, () => {
-    console.log('running')
-  })
-})()
+  return container
+}
