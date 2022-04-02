@@ -12,13 +12,36 @@ import './controllers/CustomersController'
 import { AuthService } from './services/AuthService'
 import { DatabaseService } from './services/DatabaseService'
 import { HashService } from './services/HashService'
+import * as path from 'path'
 
 const container = new Container()
 
 ;(async function () {
-  const connection = await createConnection()
+  const connection = await createConnection({
+    type: 'sqlite',
+    database: path.resolve(__dirname, 'database.sqlite'),
+    logging: false,
+    migrationsRun: true,
+    entities: [
+      path.resolve(__dirname, 'database/entity/**/*.ts'),
+      path.resolve(__dirname, 'database/entity/**/*.js'),
+    ],
+    migrations: [
+      path.resolve(__dirname, 'database/migration/**/*.ts'),
+      path.resolve(__dirname, 'database/migration/**/*.js'),
+    ],
+    subscribers: [
+      path.resolve(__dirname, 'database/subscriber/**/*.ts'),
+      path.resolve(__dirname, 'database/subscriber/**/*.js'),
+    ],
+    cli: {
+      entitiesDir: path.resolve(__dirname, 'database/entity'),
+      migrationsDir: path.resolve(__dirname, 'database/migration'),
+      subscribersDir: path.resolve(__dirname, 'database/subscriber'),
+    },
+  })
 
-  container.bind<Connection>(Connection).toDynamicValue((context) => {
+  container.bind<Connection>(Connection).toDynamicValue(() => {
     return connection
   })
   container.bind<DatabaseService>(DatabaseService).to(DatabaseService)

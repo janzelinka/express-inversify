@@ -1,6 +1,7 @@
 import { injectable } from 'inversify'
 import {
   Connection,
+  DeepPartial,
   DeleteResult,
   FindConditions,
   FindManyOptions,
@@ -19,9 +20,9 @@ export abstract class AbstractRepository<T> {
     return (await this.repository).find(options)
   }
 
-  protected create = async (data: T): Promise<T> => {
-    console.log(this.repository)
-    return (await this.repository).save((await this.repository).create(data))
+  protected create = async (data: DeepPartial<T>) => {
+    const repo = await this.repository
+    return repo.save(data)
   }
 
   protected update = async (

@@ -2,12 +2,13 @@ import * as express from 'express'
 import { inject } from 'inversify'
 import {
   controller,
+  httpGet,
   httpPost,
   interfaces,
   request,
   response,
 } from 'inversify-express-utils'
-import { User } from '../db/entity/User'
+import { User } from '../database/entity/User'
 import { AUTHORIZED_MIDDLEWARE } from '../middlewares'
 import { DatabaseService } from '../services/DatabaseService'
 import { ONLY_ADMINS, PUBLIC } from './permissions/Permissions'
@@ -18,7 +19,7 @@ export class UsersController implements interfaces.Controller {
     @inject(DatabaseService) private databaseService: DatabaseService
   ) {}
 
-  @httpPost('/', AUTHORIZED_MIDDLEWARE(PUBLIC))
+  @httpGet('/')
   private async index(
     @request() req: express.Request,
     @response() res: express.Response

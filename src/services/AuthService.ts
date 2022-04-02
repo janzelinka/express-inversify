@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { User } from '../db/entity/User'
+import { User } from '../database/entity/User'
 import { ERoles } from '../enums/Roles'
 import { UserNotCreated } from '../errors/UserNotCreated'
 import { generateAccessToken } from '../jwt'

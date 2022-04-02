@@ -10,8 +10,8 @@ import {
   request,
   response,
 } from 'inversify-express-utils'
-import { Customer } from '../db/entity/Customer'
-import { User } from '../db/entity/User'
+import { Customer } from '../database/entity/Customer'
+import { User } from '../database/entity/User'
 import { AUTHORIZED_MIDDLEWARE } from '../middlewares'
 import { AbstractRepository } from '../repository/Repository'
 import { DatabaseService } from '../services/DatabaseService'

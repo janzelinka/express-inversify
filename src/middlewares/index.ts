@@ -1,6 +1,6 @@
 import { parseAccessToken } from '../jwt'
 import * as express from 'express'
-import { User } from '../db/entity/User'
+import { User } from '../database/entity/User'
 
 type TFullfilmentFn = (decoded: User) => boolean
 
