@@ -3,6 +3,7 @@ import { Connection } from 'typeorm'
 import { User } from '../entity/User'
 import { Customer } from '../entity/Customer'
 import { Role } from '../entity/Role'
+import { Product } from '../entity/Product'
 
 export default class InitialSeed implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
@@ -17,5 +18,7 @@ export default class InitialSeed implements Seeder {
         return user
       })
       .createMany(15)
+
+    await factory(Product)().createMany(150)
   }
 }
