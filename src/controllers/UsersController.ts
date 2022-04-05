@@ -1,25 +1,20 @@
-import * as express from "express";
+import * as express from 'express'
+import { inject } from 'inversify'
 import {
-  interfaces,
   controller,
+  httpGet,
   httpPost,
+  interfaces,
   request,
   response,
-  httpGet,
-  httpPut,
-  httpDelete,
-} from "inversify-express-utils";
-import { inject } from "inversify";
-import { DatabaseService } from "../services/DatabaseService";
-import { User } from "../db/entity/User";
-import { AUTHORIZED_MIDDLEWARE } from "../middlewares";
-import { PUBLIC, ONLY_ADMINS } from "./permissions/Permissions";
-import { AuthService } from "../services/AuthService";
-import { AbstractRepository } from "./base/AbstractRepository";
+} from 'inversify-express-utils'
+import { User } from '../database/entity/User'
+import { AUTHORIZED_MIDDLEWARE } from '../middlewares'
+import { DatabaseService } from '../services/DatabaseService'
+import { ONLY_ADMINS, PUBLIC } from './permissions/Permissions'
 
-@controller("/users")
-export class UsersController extends AbstractRepository<User> implements interfaces.Controller {
-
+@controller('/users')
+export class UsersController implements interfaces.Controller {
   constructor(
     @inject(DatabaseService) protected readonly databaseService: DatabaseService,
     @inject(AuthService) protected readonly authService: AuthService
@@ -27,33 +22,22 @@ export class UsersController extends AbstractRepository<User> implements interfa
     super(databaseService, User)
   }
 
-  @httpPost("/", AUTHORIZED_MIDDLEWARE(PUBLIC))
+  @httpGet('/')
   private async index(
     @request() req: express.Request,
     @response() res: express.Response
   ) {
-    const userRepository = await this.databaseService.getRepository(User);
-    const users: User[] = await userRepository.find();
-    res.json(users);
+    const userRepository = await this.databaseService.getRepository(User)
+    const users: User[] = await userRepository.find()
+    res.json(users)
   }
 
-
-  @httpPost("/create")
-  private async _create(
-    @request() req: express.Request,
-    @response() res: express.Response
-  ) {
-    const result = await this.authService.register(req.body)
-    console.log(result)
-  }
-
-
-  @httpPost("/special", AUTHORIZED_MIDDLEWARE(ONLY_ADMINS))
+  @httpPost('/special', AUTHORIZED_MIDDLEWARE(ONLY_ADMINS))
   private async special(
     @request() req: express.Request,
     @response() res: express.Response
   ) {
-    res.json("ok");
+    res.json('ok')
   }
 
   @httpGet("/list")

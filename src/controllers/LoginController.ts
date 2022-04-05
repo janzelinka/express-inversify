@@ -1,30 +1,20 @@
-import * as express from "express";
+import * as express from 'express'
+import { inject } from 'inversify'
 import {
-  interfaces,
   controller,
-  httpGet,
   httpPost,
-  httpDelete,
+  interfaces,
   request,
-  queryParam,
   response,
-  requestParam,
-  next,
-} from "inversify-express-utils";
-import { injectable, inject } from "inversify";
-import { DatabaseService } from "../services/DatabaseService";
-import { User } from "../db/entity/User";
-import { AuthService } from "../services/AuthService";
-import { UserNotCreated } from "../errors/UserNotCreated";
-import { DeleteResult, FindConditions, FindManyOptions, Repository } from "typeorm";
+} from 'inversify-express-utils'
+import { AuthService } from '../services/AuthService'
 
-
-@controller("/login")
+@controller('/login')
 export class LoginController implements interfaces.Controller {
   constructor(@inject(AuthService) private authService: AuthService) {
   }
 
-  @httpPost("/")
+  @httpPost('/')
   private async index(
     @request() req: express.Request,
     @response() res: express.Response
@@ -32,28 +22,33 @@ export class LoginController implements interfaces.Controller {
     const token = await this.authService.login({
       userName: req.body.userName,
       password: req.body.password,
-    });
+    })
+
+    console.log(token)
 
     if (!token) {
-      res.sendStatus(401);
-      res.send("Unauthorized");
-      res.end();
+      res.sendStatus(401)
+      res.end()
     }
-
-    res.status(200).json({ token });
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.cookie('token', token, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+    })
+    res.send('')
   }
 
-  @httpPost("/register")
+  @httpPost('/register')
   private async create(
     @request() req: express.Request,
     @response() res: express.Response
   ) {
     try {
-      const user = await this.authService.register(req.body);
-      res.json(user);
+      const user = await this.authService.register(req.body)
+      res.json(user)
     } catch (error) {
-      res.statusCode = 403;
-      res.send(error);
+      res.statusCode = 403
+      res.send(error)
     }
   }
 
