@@ -7,23 +7,6 @@ import {
   interfaces,
   request,
   response,
-<<<<<<< HEAD
-  httpGet,
-  httpPut,
-  httpDelete,
-} from "inversify-express-utils";
-import { inject } from "inversify";
-import { DatabaseService } from "../services/DatabaseService";
-import { User } from "../db/entity/User";
-import { AUTHORIZED_MIDDLEWARE } from "../middlewares";
-import { PUBLIC, ONLY_ADMINS } from "./permissions/Permissions";
-import { AuthService } from "../services/AuthService";
-import { AbstractRepository } from "./base/AbstractRepository";
-
-@controller("/users")
-export class UsersController extends AbstractRepository<User> implements interfaces.Controller {
-
-=======
 } from 'inversify-express-utils'
 import { User } from '../database/entity/User'
 import { AUTHORIZED_MIDDLEWARE } from '../middlewares'
@@ -32,7 +15,6 @@ import { ONLY_ADMINS, PUBLIC } from './permissions/Permissions'
 
 @controller('/users')
 export class UsersController implements interfaces.Controller {
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
   constructor(
     @inject(DatabaseService) protected readonly databaseService: DatabaseService,
     @inject(AuthService) protected readonly authService: AuthService
@@ -50,22 +32,7 @@ export class UsersController implements interfaces.Controller {
     res.json(users)
   }
 
-<<<<<<< HEAD
-
-  @httpPost("/create")
-  private async _create(
-    @request() req: express.Request,
-    @response() res: express.Response
-  ) {
-    const result = await this.authService.register(req.body)
-    console.log(result)
-  }
-
-
-  @httpPost("/special", AUTHORIZED_MIDDLEWARE(ONLY_ADMINS))
-=======
   @httpPost('/special', AUTHORIZED_MIDDLEWARE(ONLY_ADMINS))
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
   private async special(
     @request() req: express.Request,
     @response() res: express.Response

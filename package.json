@@ -4,11 +4,7 @@
   "description": "My webpack project",
   "main": "src/index.ts",
   "scripts": {
-<<<<<<< HEAD
-    "start": "nodemon",
-=======
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
     "dev": "nodemon --watch src/**/* --ext ts,json --ignore src/**/*.spec.ts --exec ts-node src/index.ts",
     "db:seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
     "docker-start": "ts-node src/index.ts",
@@ -19,12 +15,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-<<<<<<< HEAD
-    "@faker-js/faker": "5.5.3",
-=======
     "@faker-js/faker": "^6.1.1",
     "@types/cookie-parser": "^1.4.2",
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/faker": "^6.6.9",
@@ -47,10 +39,7 @@
     "wepack-cli": "0.0.1-security"
   },
   "dependencies": {
-<<<<<<< HEAD
-=======
     "cookie-parser": "^1.4.6",
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.17.1",

@@ -1,31 +1,3 @@
-<<<<<<< HEAD
-# 🚀 README JUST FOR DEV PURPOSES
-
-To install
-
-```
-npm run install / yarn
-```
-
-For dev purposes
-
-```
-yarn dev / npm run dev
-```
-
-Seeding some more data
-
-```
-yarn db:seed / npm run db:seed
-```
-
-Generating new migration (name of migration should be changed in package.json
-```
-yarn generate-migration / npm run generate-migration
-```
-
-# 🚀 BUILD
-=======
 # 🚀 express-inversify-jwt
 - Just an example of implementing http server in NodeJS running on express, using InversifyJS for DI Container and TypeORM for ORM (thanks CJay).
 - Implemented JWT for Authentication (still in development phase).
@@ -54,4 +26,3 @@ or
 - ToDo
 ## Tip
 - when using VSCode, install TSLint
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { JWTUserInfo } from "../services/JWTService";
-=======
 import { User } from '../database/entity/User'
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
 
 const dotenv = require('dotenv')
 const jwt = require('jsonwebtoken')
@@ -10,8 +6,6 @@ const jwt = require('jsonwebtoken')
 // get config vars
 dotenv.config()
 
-<<<<<<< HEAD
-=======
 export type JWTUserInfo = { userInfo: Exclude<User, 'password'> }
 
 export function generateAccessToken(userInfo: User) {
@@ -20,7 +14,6 @@ export function generateAccessToken(userInfo: User) {
     expiresIn: '1800s',
   })
 }
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
 
 export function parseAccessToken(token: string): Promise<JWTUserInfo | null> {
   return new Promise((res, rej) => {
@@ -33,8 +26,6 @@ export function parseAccessToken(token: string): Promise<JWTUserInfo | null> {
     })
   })
 }
-<<<<<<< HEAD
-=======
 
 export const createJWTUserInfo = (user: User) => {
   const jwtUserInfo: User = {
@@ -44,4 +35,3 @@ export const createJWTUserInfo = (user: User) => {
   delete jwtUserInfo.salt
   return jwtUserInfo
 }
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1

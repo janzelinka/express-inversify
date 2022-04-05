@@ -6,21 +6,8 @@ import {
   interfaces,
   request,
   response,
-<<<<<<< HEAD
-  requestParam,
-  next,
-} from "inversify-express-utils";
-import { injectable, inject } from "inversify";
-import { DatabaseService } from "../services/DatabaseService";
-import { User } from "../db/entity/User";
-import { AuthService } from "../services/AuthService";
-import { UserNotCreated } from "../errors/UserNotCreated";
-import { DeleteResult, FindConditions, FindManyOptions, Repository } from "typeorm";
-
-=======
 } from 'inversify-express-utils'
 import { AuthService } from '../services/AuthService'
->>>>>>> 10d47a89ebf1908823bc2c7e880f6733eb7527b1
 
 @controller('/login')
 export class LoginController implements interfaces.Controller {
