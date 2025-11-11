@@ -14,12 +14,14 @@
     "@types/node": "^24.10.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
+    "typeorm-extension": "^3.7.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "body-parser": "^2.2.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "express": "^4.21.1",
     "inversify": "^6.0.3",
     "inversify-express-utils": "^6.5.0",

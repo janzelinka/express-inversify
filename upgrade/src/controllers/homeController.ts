@@ -2,11 +2,11 @@ import { inject } from 'inversify'
 import { controller, httpGet, interfaces } from 'inversify-express-utils'
 
 @controller('/')
-export class UsersController implements interfaces.Controller {
+export class HomeController implements interfaces.Controller {
   constructor(@inject('DataSource') private dataSource: any) {}
 
   @httpGet('/home')
-  public async getUsers() {
+  public async home() {
     console.log(this.dataSource)
   }
 }
