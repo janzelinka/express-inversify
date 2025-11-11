@@ -1,0 +1,24 @@
+import { DataSource } from 'typeorm'
+import { resolve } from 'path'
+
+const dataSource = new DataSource({
+  type: 'sqlite',
+  database: resolve(__dirname, 'database.sqlite'),
+  logging: false,
+  migrationsRun: true,
+  entities: [
+    resolve(__dirname, '../entity/**/*.ts'),
+    resolve(__dirname, '../entity/**/*.js'),
+  ],
+  migrations: [
+    resolve(__dirname, '../migration/**/*.ts'),
+    resolve(__dirname, '../migration/**/*.js'),
+  ],
+  subscribers: [
+    resolve(__dirname, '../subscriber/**/*.ts'),
+    resolve(__dirname, '../subscriber/**/*.js'),
+  ],
+  synchronize: false,
+})
+
+export { dataSource }

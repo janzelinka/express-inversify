@@ -5,7 +5,6 @@ import {
   OneToOne,
   JoinColumn,
   BeforeInsert,
-  InsertEvent,
   ManyToOne,
 } from 'typeorm'
 import { Customer } from './Customer'
