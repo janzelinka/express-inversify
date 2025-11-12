@@ -1,11 +1,8 @@
 import 'reflect-metadata'
-// import * as bodyParser from 'body-parser'
-// import * as cookieParser from 'cookie-parser'
-// import * as cors from 'cors'
 import { Container } from 'inversify'
 import * as express from 'express'
 
-import { DataSource } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import './controllers/homeController'
 import './controllers/usersController'
 import { dataSource } from './database/dataSource/dataSource'
@@ -13,13 +10,8 @@ import { InversifyExpressHttpAdapter } from '@inversifyjs/http-express-v4'
 import { HomeController } from './controllers/homeController'
 import { UsersController } from './controllers/usersController'
 import { SwaggerUiProvider } from '@inversifyjs/http-open-api'
-// import './controllers/UsersController'
-// import './controllers/CustomersController'
-// import './controllers/ProductController'
-// import { AuthService } from './services/AuthService'
-// import { DatabaseService } from './services/DatabaseService'
-// import { HashService } from './services/HashService'
-// import { getTypeORMConfig } from './config'
+import { User } from './database/entity/User'
+import { UsersService } from './repository/usersRepository'
 
 let container = new Container()
 const port = process.env.PORT || 3000
@@ -33,13 +25,17 @@ const port = process.env.PORT || 3000
     return _dataSource
   })
 
+  container.bind<Repository<User>>('Repository<User>').toDynamicValue(() => {
+    return _dataSource.getRepository(User)
+  })
+
+  container
+    .bind<UsersService>('UsersService')
+    .to(UsersService)
+    .inTransientScope()
+
   container.bind(HomeController).toSelf().inSingletonScope()
   container.bind(UsersController).toSelf().inSingletonScope()
-  // container.bind<DatabaseService>(DatabaseService).to(DatabaseService)
-  // container.bind<AuthService>(AuthService).to(AuthService)
-  // container.bind<HashService>(HashService).to(HashService)
-
-  //   container = bindContainerWith(container, connection)
 
   const adapter = new InversifyExpressHttpAdapter(container)
 
@@ -66,23 +62,4 @@ const port = process.env.PORT || 3000
   application.listen(port, () => {
     console.log('running on port no: ' + port)
   })
-
-  // application.see
-
-  // application
-  //   .setConfig((app) => {
-  //     app
-  //       .use(
-  //         bodyParser.urlencoded({
-  //           extended: true,
-  //         })
-  //       )
-  //       .use(bodyParser.json())
-  //       .use(cookieParser())
-  //       .use(cors({ origin: ['http://localhost:4200'], credentials: true }))
-  //   })
-  //   .build()
-  //   .listen(port, () => {
-  //     console.log('running on port no: ' + port)
-  //   })
 })()
