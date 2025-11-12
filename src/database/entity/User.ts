@@ -43,4 +43,16 @@ export class User {
   beforeUserNameInsert = () => {
     this.userName = this.userName === '' ? null : this.userName
   }
+
+  toDto?() {
+    return {
+      id: this.id,
+      userName: this.userName,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      age: this.age,
+      customer: this.customer,
+      role: this.role,
+    }
+  }
 }
