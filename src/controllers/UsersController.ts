@@ -2,6 +2,7 @@ import { inject } from 'inversify'
 import { DataSource } from 'typeorm'
 import { User } from '../database/entity/User'
 import { Controller, Get, Post } from '@inversifyjs/http-core'
+import { OasDescription } from '@inversifyjs/http-open-api'
 
 // interface IUserModel {
 //   id: number
@@ -13,11 +14,13 @@ import { Controller, Get, Post } from '@inversifyjs/http-core'
 export class UsersController {
   constructor(@inject('DataSource') private dataSource: DataSource) {}
 
+  @OasDescription('Get all users')
   @Get('/')
   public async getAll() {
     return this.dataSource.getRepository<User>('User').find()
   }
 
+  @OasDescription('Creates a user')
   @Post('/create')
   public async create(data) {
     this.dataSource.getRepository<User>('User').save(data)
