@@ -1,29 +1,24 @@
-//@ts-nocheck
-import { define } from 'typeorm-seeding'
-import { ERoles } from '../../enums/Roles'
+import { setSeederFactory } from 'typeorm-extension'
+import * as crypto from 'crypto'
 import { User } from '../entity/User'
-const crypto = require('crypto')
 
-const generateHashAndSaltFromPassword = (password: string) => {
+export default setSeederFactory(User, (faker) => {
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto
-    .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
+    .pbkdf2Sync('testpassword', salt, 1000, 64, `sha512`)
     .toString(`hex`)
 
-  return { hash, salt }
-}
+  const firstName = faker.name.firstName()
+  const lastName = faker.name.lastName()
+  const userName = lastName
 
-define(User, (faker) => {
   let user: User = new User()
-  const { hash, salt } = generateHashAndSaltFromPassword('testpassword')
-
-  user.age = faker.random.number({ min: 18, max: 80 })
-  user.firstName = faker.name.firstName()
-  user.lastName = faker.name.lastName()
-  user.role = ERoles.USER
-  user.userName = faker.internet.email()
-  user.salt = salt
+  user.age = faker.number.int({ min: 18, max: 65 })
+  user.firstName = firstName
+  user.lastName = lastName
+  user.userName = userName + faker.number.int(1000)
   user.password = hash
+  user.salt = salt
 
   return user
 })

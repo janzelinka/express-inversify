@@ -4,8 +4,8 @@ import { ERoles } from '../enums/Roles'
 import { UserNotCreated } from '../errors/UserNotCreated'
 import { generateAccessToken } from '../jwt'
 import { AbstractRepository } from '../repository/Repository'
-import { DatabaseService } from './DatabaseService'
-import { HashService } from './HashService'
+import { DatabaseService } from './databaseService'
+import { HashService } from './hashService'
 
 interface ILogin {
   userName: string
@@ -20,7 +20,8 @@ export interface IAuthService {
 @injectable()
 export class AuthService
   extends AbstractRepository<User>
-  implements IAuthService {
+  implements IAuthService
+{
   constructor(
     @inject(DatabaseService) databaseService: DatabaseService,
     @inject(HashService) private readonly hashService: HashService

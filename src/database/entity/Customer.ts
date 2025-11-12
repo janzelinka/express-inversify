@@ -3,7 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   JoinColumn,
-  OneToOne,
+  OneToMany,
 } from 'typeorm'
 import { User } from './User'
 
@@ -21,7 +21,7 @@ export class Customer {
   @Column()
   vatID: string
 
-  @OneToOne(() => User, { nullable: true })
+  @OneToMany(() => Customer, (customer) => customer.user)
   @JoinColumn()
-  user?: User
+  user?: User[]
 }

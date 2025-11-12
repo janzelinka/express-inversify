@@ -2,7 +2,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
   JoinColumn,
   BeforeInsert,
   ManyToOne,
@@ -33,7 +32,7 @@ export class User {
   @Column()
   salt: string
 
-  @OneToOne(() => Customer, { nullable: true })
+  @ManyToOne(() => User, (user) => user.customer)
   @JoinColumn()
   customer: Customer
 
