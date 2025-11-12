@@ -1,18 +1,24 @@
 import { inject } from 'inversify'
 import { Controller, Get, Post } from '@inversifyjs/http-core'
-import { OasDescription, OasRequestBody } from '@inversifyjs/http-open-api'
+import {
+  OasDescription,
+  OasRequestBody,
+  OasTag,
+} from '@inversifyjs/http-open-api'
 import { UsersService } from '../repository/usersRepository'
 
 @Controller('/users')
 export class UsersController {
   constructor(@inject('UsersService') private usersService: UsersService) {}
 
+  @OasTag('users')
   @OasDescription('Get all users')
   @Get('/')
   public async getAll() {
     return (await this.usersService.getAllUsers()).map((user) => user.toDto())
   }
 
+  @OasTag('users')
   @OasDescription('Creates a user')
   @OasRequestBody({
     content: {
