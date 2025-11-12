@@ -1,6 +1,6 @@
 import { inject } from 'inversify'
 import { Controller, Get, Post } from '@inversifyjs/http-core'
-import { OasDescription } from '@inversifyjs/http-open-api'
+import { OasDescription, OasRequestBody } from '@inversifyjs/http-open-api'
 import { UsersService } from '../repository/usersRepository'
 
 @Controller('/users')
@@ -14,6 +14,30 @@ export class UsersController {
   }
 
   @OasDescription('Creates a user')
+  @OasRequestBody({
+    content: {
+      'application/json': {
+        schema: {
+          properties: {
+            id: { type: 'string' },
+            userName: { type: 'string' },
+            firstName: { type: 'string' },
+            lastName: { type: 'string' },
+            password: { type: 'string' },
+            age: { type: 'number' },
+            customer: {
+              type: 'object',
+              properties: {
+                id: { type: 'number' },
+              },
+            },
+          },
+          required: ['userName', 'firstName', 'lastName', 'age', 'password'],
+          type: 'object',
+        },
+      },
+    },
+  })
   @Post('/create')
   public async create(data) {}
 }
