@@ -12,6 +12,7 @@ import { UsersController } from './controllers/usersController'
 import { SwaggerUiProvider } from '@inversifyjs/http-open-api'
 import { User } from './database/entity/User'
 import { UsersService } from './repository/usersRepository'
+import { JWTService } from './services/jwtService'
 
 let container = new Container()
 const port = process.env.PORT || 3000
@@ -34,6 +35,7 @@ const port = process.env.PORT || 3000
     .to(UsersService)
     .inTransientScope()
 
+  container.bind<JWTService>('JWTService').to(JWTService).inTransientScope()
   container.bind(HomeController).toSelf().inSingletonScope()
   container.bind(UsersController).toSelf().inSingletonScope()
 
