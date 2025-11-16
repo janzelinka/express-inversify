@@ -12,12 +12,15 @@ export default class RoleSeeder implements Seeder {
 
   public async run(dataSource: DataSource): Promise<any> {
     // ---------------------------------------------------
-
-    const repository = dataSource.getRepository(Role)
-    await repository.insert([
-      {
-        roleName: 'ADMIN',
-      },
-    ])
+    try {
+      const repository = dataSource.getRepository(Role)
+      await repository.insert([
+        {
+          roleName: 'ADMIN',
+        },
+      ])
+    } catch (error) {
+      console.log('RoleSeeder error:', error)
+    }
   }
 }

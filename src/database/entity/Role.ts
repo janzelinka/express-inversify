@@ -4,7 +4,7 @@ import { BaseEntity } from './base/BaseEntity'
 
 @Entity()
 export class Role extends BaseEntity {
-  @Column()
+  @Column({ unique: true })
   roleName?: string
 
   @OneToMany(() => User, (user) => user.role)

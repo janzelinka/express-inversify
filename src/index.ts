@@ -24,11 +24,6 @@ const port = process.env.PORT || 3000
   //database initialization
   await dataSource.initialize()
 
-  await runSeeders(dataSource, {
-    seeds: ['src/database/seeds/**/*{.ts,.js}'],
-    factories: ['src/database/factories/**/*{.ts,.js}'],
-  })
-  //datasource as service injected in container
   container.bind<DataSource>('DataSource').toDynamicValue(() => {
     return dataSource
   })
@@ -47,6 +42,12 @@ const port = process.env.PORT || 3000
   container.bind<HashService>('HashService').to(HashService).inTransientScope()
   container.bind(HomeController).toSelf().inSingletonScope()
   container.bind(UsersController).toSelf().inSingletonScope()
+
+  await runSeeders(dataSource, {
+    seeds: ['src/database/seeds/**/*{.ts,.js}'],
+    factories: ['src/database/factories/**/*{.ts,.js}'],
+  })
+  //datasource as service injected in container
 
   const adapter = new InversifyExpressHttpAdapter(container)
 
@@ -74,3 +75,5 @@ const port = process.env.PORT || 3000
     console.log('running on port no: ' + port)
   })
 })()
+
+export default container
