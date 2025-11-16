@@ -11,8 +11,10 @@ import { HomeController } from './controllers/homeController'
 import { UsersController } from './controllers/usersController'
 import { SwaggerUiProvider } from '@inversifyjs/http-open-api'
 import { User } from './database/entity/User'
-import { UsersService } from './repository/usersRepository'
+import { UsersService } from './services/usersService'
 import { JWTService } from './services/jwtService'
+import { AuthService } from './services/authService'
+import { HashService } from './services/hashService'
 
 let container = new Container()
 const port = process.env.PORT || 3000
@@ -20,7 +22,6 @@ const port = process.env.PORT || 3000
 ;(async function () {
   //database initialization
   const _dataSource = await dataSource.initialize()
-
   //datasource as service injected in container
   container.bind<DataSource>('DataSource').toDynamicValue(() => {
     return _dataSource
@@ -35,7 +36,9 @@ const port = process.env.PORT || 3000
     .to(UsersService)
     .inTransientScope()
 
+  container.bind<AuthService>('AuthService').to(AuthService).inTransientScope()
   container.bind<JWTService>('JWTService').to(JWTService).inTransientScope()
+  container.bind<HashService>('HashService').to(HashService).inTransientScope()
   container.bind(HomeController).toSelf().inSingletonScope()
   container.bind(UsersController).toSelf().inSingletonScope()
 

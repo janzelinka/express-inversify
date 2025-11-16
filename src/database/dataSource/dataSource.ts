@@ -8,15 +8,15 @@ const dataSource = new DataSource({
   migrationsRun: true,
   entities: [
     resolve(__dirname, '../entity/**/*.ts'),
-    resolve(__dirname, '../entity/**/*.js'),
+    resolve('../entity/**/*.js'),
   ],
   migrations: [
     resolve(__dirname, '../migration/**/*.ts'),
-    resolve(__dirname, '../migration/**/*.js'),
+    resolve('../migration/**/*.js'),
   ],
   subscribers: [
     resolve(__dirname, '../subscriber/**/*.ts'),
-    resolve(__dirname, '../subscriber/**/*.js'),
+    resolve('../subscriber/**/*.js'),
   ],
   synchronize: false,
 })

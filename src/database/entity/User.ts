@@ -1,19 +1,10 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  JoinColumn,
-  BeforeInsert,
-  ManyToOne,
-} from 'typeorm'
+import { Entity, Column, JoinColumn, BeforeInsert, ManyToOne } from 'typeorm'
 import { Customer } from './Customer'
 import { Role } from './Role'
+import { BaseEntity } from './base/BaseEntity'
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number
-
+export class User extends BaseEntity {
   @Column({ type: 'varchar', unique: true, length: 50 })
   userName!: string
 

@@ -5,7 +5,7 @@ import {
   OasRequestBody,
   OasTag,
 } from '@inversifyjs/http-open-api'
-import { UsersService } from '../repository/usersRepository'
+import { UsersService } from '../services/usersService'
 
 @Controller('/users')
 export class UsersController {
@@ -15,7 +15,8 @@ export class UsersController {
   @OasDescription('Get all users')
   @Get('/')
   public async getAll() {
-    return (await this.usersService.getAllUsers()).map((user) => user.toDto())
+    const users = await this.usersService.getAllUsers()
+    return users.map((user) => user.toDto())
   }
 
   @OasTag('users')

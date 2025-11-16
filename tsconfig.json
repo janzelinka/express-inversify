@@ -1,15 +1,20 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES2022",
-    "lib": ["es6", "dom"],
-    "noImplicitAny": false,
-    "sourceMap": false,
-    "emitDecoratorMetadata": true,
+    "target": "esnext",
+    "lib": ["ESNext", "dom"],
     "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "noUnusedLocals": true
+    "emitDecoratorMetadata": true,
+    "module": "nodenext",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "declaration": true,
+    "moduleResolution": "nodenext",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "types": ["reflect-metadata"],
+    "esModuleInterop": true
   },
-  "compileOnSave": false,
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }

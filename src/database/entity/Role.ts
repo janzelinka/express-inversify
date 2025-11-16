@@ -1,11 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 import { User } from './User'
+import { BaseEntity } from './base/BaseEntity'
 
 @Entity()
-export class Role {
-  @PrimaryGeneratedColumn()
-  id: number
-
+export class Role extends BaseEntity {
   @Column()
   roleName?: string
 

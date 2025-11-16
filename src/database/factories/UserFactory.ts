@@ -5,7 +5,7 @@ import { User } from '../entity/User'
 export default setSeederFactory(User, (faker) => {
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto
-    .pbkdf2Sync('testpassword', salt, 1000, 64, `sha512`)
+    .pbkdf2Sync('password', salt, 1000, 64, `sha512`)
     .toString(`hex`)
 
   const firstName = faker.name.firstName()
@@ -19,6 +19,7 @@ export default setSeederFactory(User, (faker) => {
   user.userName = userName + faker.number.int(1000)
   user.password = hash
   user.salt = salt
+  user.role = null // assign role in the seeder file
 
   return user
 })

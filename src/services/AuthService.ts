@@ -1,11 +1,9 @@
 import { inject, injectable } from 'inversify'
 import { User } from '../database/entity/User'
-import { ERoles } from '../enums/Roles'
-import { UserNotCreated } from '../errors/UserNotCreated'
-import { generateAccessToken } from '../jwt'
-import { AbstractRepository } from '../repository/Repository'
-import { DatabaseService } from './databaseService'
 import { HashService } from './hashService'
+import { DataSource } from 'typeorm'
+import { JWTService } from './jwtService'
+import { UsersService } from './usersService'
 
 interface ILogin {
   userName: string
@@ -18,17 +16,13 @@ export interface IAuthService {
 }
 
 @injectable()
-export class AuthService
-  extends AbstractRepository<User>
-  implements IAuthService
-{
+export class AuthService {
   constructor(
-    @inject(DatabaseService) databaseService: DatabaseService,
-    @inject(HashService) private readonly hashService: HashService
-  ) {
-    super(databaseService.getRepository(User))
-    console.log('running constructor')
-  }
+    @inject('DataSource') dataSource: DataSource,
+    @inject('HashService') private readonly hashService: HashService,
+    @inject('JWTService') private readonly jwtService: JWTService,
+    @inject('UsersService') private readonly usersService: UsersService
+  ) {}
 
   login = async ({
     userName,
@@ -37,40 +31,37 @@ export class AuthService
     userName: string
     password: string
   }): Promise<string | null> => {
-    const [user] = await this.get({
-      where: { userName },
-      relations: ['role'],
+    const [user] = await this.usersService.getUserByUsername(userName, {
+      withRole: true,
     })
-
-    console.log(user)
 
     if (user) {
       const hash = this.hashService.createHash(password, user.salt)
 
       if (hash === user.password) {
-        return generateAccessToken(user)
+        return this.jwtService.generateAccessToken(user)
       }
     }
     return null
   }
 
-  register = async (user: User): Promise<User> => {
-    const { hash, salt } = this.hashService.generateHashAndSaltFromPassword(
-      user.password
-    )
+  // register = async (user: User): Promise<User> => {
+  //   const { hash, salt } = this.hashService.generateHashAndSaltFromPassword(
+  //     user.password
+  //   )
 
-    let userCreated
-    try {
-      userCreated = await this.create({
-        ...user,
-        role: { id: ERoles.USER },
-        password: hash,
-        salt,
-      })
-    } catch (error) {
-      throw new UserNotCreated(error.message)
-    }
+  //   let userCreated
+  //   try {
+  //     userCreated = await this.create({
+  //       ...user,
+  //       role: { id: ERoles.USER },
+  //       password: hash,
+  //       salt,
+  //     })
+  //   } catch (error) {
+  //     throw new UserNotCreated(error.message)
+  //   }
 
-    return userCreated
-  }
+  //   return userCreated
+  // }
 }
