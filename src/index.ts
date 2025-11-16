@@ -15,20 +15,26 @@ import { UsersService } from './services/usersService'
 import { JWTService } from './services/jwtService'
 import { AuthService } from './services/authService'
 import { HashService } from './services/hashService'
+import { runSeeders } from 'typeorm-extension'
 
 let container = new Container()
 const port = process.env.PORT || 3000
 
 ;(async function () {
   //database initialization
-  const _dataSource = await dataSource.initialize()
+  await dataSource.initialize()
+
+  await runSeeders(dataSource, {
+    seeds: ['src/database/seeds/**/*{.ts,.js}'],
+    factories: ['src/database/factories/**/*{.ts,.js}'],
+  })
   //datasource as service injected in container
   container.bind<DataSource>('DataSource').toDynamicValue(() => {
-    return _dataSource
+    return dataSource
   })
 
   container.bind<Repository<User>>('Repository<User>').toDynamicValue(() => {
-    return _dataSource.getRepository(User)
+    return dataSource.getRepository(User)
   })
 
   container

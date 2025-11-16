@@ -6,18 +6,8 @@ const dataSource = new DataSource({
   database: resolve(__dirname, 'database.sqlite'),
   logging: false,
   migrationsRun: true,
-  entities: [
-    resolve(__dirname, '../entity/**/*.ts'),
-    resolve('../entity/**/*.js'),
-  ],
-  migrations: [
-    resolve(__dirname, '../migration/**/*.ts'),
-    resolve('../migration/**/*.js'),
-  ],
-  subscribers: [
-    resolve(__dirname, '../subscriber/**/*.ts'),
-    resolve('../subscriber/**/*.js'),
-  ],
+  entities: [resolve(__dirname, '../entity/**/*.{ts,js}')],
+  migrations: [resolve(__dirname, '../migration/**/*.{ts,js}')],
   synchronize: false,
 })
 
