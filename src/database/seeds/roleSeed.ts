@@ -10,17 +10,18 @@ export default class RoleSeeder implements Seeder {
    */
   track = false
 
-  public async run(
-    dataSource: DataSource,
-    factoryManager: SeederFactoryManager
-  ): Promise<any> {
+  public async run(dataSource: DataSource): Promise<any> {
     // ---------------------------------------------------
 
-    const roleFactory = await factoryManager.get(Role)
+    // const roleFactory = await factoryManager.get(Role)
 
-    roleFactory.save({ roleName: 'ADMIN' })
-    roleFactory.save({ roleName: 'USER' })
-    roleFactory.save({ roleName: 'READER' })
-    roleFactory.save({ roleName: 'APPROVER' })
+    await dataSource.getRepository<Role>('Role').insert({ roleName: 'ADMIN' })
+    await dataSource.getRepository<Role>('Role').insert({ roleName: 'USER' })
+    await dataSource.getRepository<Role>('Role').insert({ roleName: 'READER' })
+    await dataSource
+      .getRepository<Role>('Role')
+      .insert({ roleName: 'APPROVER' })
+
+    console.log('seedeed', dataSource.getRepository<Role>('Role').find())
   }
 }

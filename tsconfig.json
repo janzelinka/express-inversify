@@ -1,20 +1,12 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "lib": ["ESNext", "dom"],
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "lib": ["es2022"],
+    "target": "es2022",
     "module": "nodenext",
-    "noImplicitAny": false,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
-    "declaration": true,
     "moduleResolution": "nodenext",
     "outDir": "./dist",
-    "rootDir": ".",
-    "types": ["reflect-metadata"],
-    "esModuleInterop": true
-  },
-  "include": ["src"]
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true
+  }
 }
